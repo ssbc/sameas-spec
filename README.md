@@ -26,25 +26,27 @@ Current clients don't have the means to support this well, and we see workaround
 Keep in mind the following are to help us focus _outward_ on the impact of whatever we design.
 Let's come back to these when we're discussing possible implementations.
 
-A good solution will 
 1. Allow a great onboarding experience
     - @soapy can merge all his accounts from any device
+
 2. Protect against unwanted merging
     - might require consent from devices being "added"
+
 3. Allow unmerging of sameAs
     - any @soapy device can nullify the sameAs (no one-ring to rull them all)
-    - TODO : does that device jsut exit, or is the whole thing void?
-4. Make it easy for "@soapy" to check their notifications
-5. Make it easy for "@soapy" to check their private messages
-6. Make it easy for anyone to mention "@soapy" (and trust they'll get it)
-7. Make it easy to DM "@soapy" and 4 other friends
-8. Be easy for developers to understand (so it can be written in other languages)
-9. Require a small dependency stack
-10. 
+    - TODO : does that device just exit, or is the whole thing void?
 
+4. Notifications
+    - anyone should be able to mention "@soapy" easily
+    - "@soapy" should be able to check their notifications
 
-(MIX: this is just my summary of what I've heard you say so far Christian, along with what's in my mind.
-It will be incomplete and imperfect, I'd love to sharpen it together)
+5. Private messages
+    - private messages should be accessible from any part of the identity
+    - one identifier per "identity" so we don't blow the recps cap
+
+6. Can be implemented in multiple languages
+    - relatively easy to understand
+    - small dependency stack
 
 
 ## History / Possible solutions
@@ -55,5 +57,37 @@ link out to draft solutions / summaries of experiments
 - Christians work
 - Mix's work
 
+## Questions
+
+**A. Unique id**
+- mix: I think we should have a unique ID for a identity. What should it be though?
+    1. any one of the feedIds in in the identity? (then lookup the sameAs and infer the others)
+        - problem: what happens when the sameAs changes over time? e.g. a cypherlink says @mix, but then one device peels out from that ... when you click the link later what do you get?
+        - problem: what do you do with recps then, use all the feedIds (NO)
+    2. a concat of all the feedIds currently in sameAs
+        - it's explicit!
+        - problem: what to do with recps?
+    3. a unique id associated with the sameAs / identity record which binds the identities
+        - can use the history of edits on this record to answer questions about "who was in the identity when"
+        - can attach a public key to this identity for DMs
+            - should not use that for id, as might want to cycle it
+        - problem: how to use this id as an 'author' in ssb-crut-authors ?
+            - identity needs a concept of sequence, and a multi-feed identity has no absolute order..
+        - Could address requirements (2) (3) using ssb-crut-authors
+            - adding another feed as an author to an identity records is inviting them
+            - they can then edit a consent field (and we consider only edits from a feed adding itself to that field as valid)
+            - any identity could remove the authorship of another one to kick it (so sameAs = author + consent)
+
+**B. Tangle?**
+- mix: Do we tangle together the messages published by the feeds in an identity?
+    - i.e. each message has `content.tangles.identity = { root, previous }`
+    - this would allow quick lookup of messages by a particular "identity" (requirement 4)
+    - would offer some _partial_ ordering, which might be needed for permissoins on e.g. record authorship (though is this enough?)
+
+**C. Signing**
+- mix: if we have a unique identity record which we can attach DM + signing keys to, then all messages could be signed by the identity
+    - might not be necessary
+
+    
 
 
