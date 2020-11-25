@@ -90,4 +90,9 @@ link out to draft solutions / summaries of experiments
 
     
 
+## Resources
 
+- Handling cypherlinks to merged records (2020-11-25) : %e5bZQU0eGr77bAm8DGJ5hgSwT7EliiA56yenIYEWxMw=.sha256
+- Multi-feed identities (2020-11-25) : %YaWEWHDWAY6p/g9zIwCJovsd1SUyHpwuGGz3Ug/jtW8=.sha256
+- Multi-device feeds - grant postmortem (2018-02-18) : %/RccaHIeyhWdoP18bhy+1IhSqnd0hGHCNmtMr14Ccbw=.sha256
+- Research multi-device feeds (2017-10-26) : %JjSO5d5/lIRyv5gUKEFis57urBvFam1cAbAIVXMMGJo=.sha256
